@@ -1,4 +1,5 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
+import { Check } from "lucide-react";
 import Image from "next/image";
 
 export default function Home() {
@@ -22,6 +23,28 @@ export default function Home() {
                 SnapCover allows you to protect your memories not just phone
                 cover.
               </p>
+              <ul className="mt-8 space-y-2 text-left font-medium flex flex-col items-center sm:items-start">
+                <div className="space-y-2">
+                  <li className="flex gap-1.5 items-center text-left">
+                    <Check className="h-5 w-5 shrink-0 text-green-600" />
+                    High-quality, durable material
+                  </li>
+                  <li className="flex gap-1.5 items-center text-left">
+                    <Check className="h-5 w-5 shrink-0 text-green-600" />5 year
+                    print gurantee
+                  </li>
+                  <li className="flex gap-1.5 items-center text-left">
+                    <Check className="h-5 w-5 shrink-0 text-green-600" />
+                    Modern iphone models supported
+                  </li>
+                </div>
+              </ul>
+
+              <div className="mt-12 flex flex-col sm:flex-row items-center sm:items-start gap-5">
+                <div className="flex -space-x-4">
+                  <img src="" alt="" />
+                </div>
+              </div>
             </div>
           </div>
         </MaxWidthWrapper>
