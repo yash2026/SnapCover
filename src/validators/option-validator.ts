@@ -1,9 +1,9 @@
 // bg-blue-950 border-blue-950
 // bg-zinc-900 border-zinc-900
+// bg-rose-950 border-rose-950
 
 import { PRODUCT_PRICES } from "@/config/products";
 
-// bg-rose-950 border-rose-950
 export const COLORS = [
   { label: "Black", value: "black", tw: "zinc-900" },
   { label: "Blue", value: "blue", tw: "blue-950" },
@@ -41,7 +41,7 @@ export const MODELS = {
 } as const;
 
 export const MATERIALS = {
-  name: "materials",
+  name: "material",
   options: [
     {
       label: "Silicone",
@@ -56,7 +56,8 @@ export const MATERIALS = {
       price: PRODUCT_PRICES.material.polycarbonate,
     },
   ],
-};
+} as const;
+
 export const FINISHES = {
   name: "finish",
   options: [
@@ -73,4 +74,4 @@ export const FINISHES = {
       price: PRODUCT_PRICES.finish.textured,
     },
   ],
-};
+} as const;
