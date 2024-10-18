@@ -6,6 +6,34 @@ import { stripe } from "@/lib/stripe";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { Order } from "@prisma/client";
 
+// Utility function to ensure that the user is present in the database
+const ensureUserInDb = async () => {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+
+  if (!user) {
+    throw new Error("You need to be logged in");
+  }
+
+  // Check if the user already exists in the database
+  let existingUser = await db.user.findUnique({
+    where: { id: user.id },
+  });
+
+  // If the user does not exist, create a new entry in the database
+  if (!existingUser) {
+    existingUser = await db.user.create({
+      data: {
+        id: user.id,
+        email: user.email as string,
+      },
+    });
+    console.log("New user created in the database:", existingUser);
+  }
+
+  return existingUser;
+};
+
 export const createCheckoutSession = async ({
   configId,
 }: {
@@ -19,12 +47,8 @@ export const createCheckoutSession = async ({
     throw new Error("Configuration not found");
   }
 
-  const { getUser } = getKindeServerSession();
-  const user = await getUser();
-
-  if (!user) {
-    throw new Error("You need to be logged in");
-  }
+  // Ensure the user is in the database
+  const user = await ensureUserInDb();
 
   const { finish, material } = configuration;
 
@@ -42,7 +66,12 @@ export const createCheckoutSession = async ({
     },
   });
 
-  console.log(user.id, configuration.id);
+  console.log(
+    "Creating order with user ID:",
+    user.id,
+    "and configuration ID:",
+    configuration.id
+  );
 
   if (existingOrder) {
     order = existingOrder;
@@ -57,7 +86,7 @@ export const createCheckoutSession = async ({
   }
 
   const product = await stripe.products.create({
-    name: "Custom Iphone cover",
+    name: "Custom iPhone cover",
     images: [configuration.imageUrl],
     default_price_data: {
       currency: "USD",
@@ -71,7 +100,7 @@ export const createCheckoutSession = async ({
     payment_method_types: ["card", "paypal"],
     mode: "payment",
     shipping_address_collection: {
-      allowed_countries: ["IN", "US", "DE", "CA", "AU"],
+      allowed_countries: ["US", "DE"],
     },
     metadata: {
       userId: user.id,
@@ -84,5 +113,6 @@ export const createCheckoutSession = async ({
       },
     ],
   });
+
   return { url: stripeSession.url };
 };

@@ -52,9 +52,10 @@ model Configuration {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String
-  Order     Order[]
+  id    String  @id @default(cuid())
+  email String
+  Order Order[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -71,12 +72,11 @@ model Order {
 
   shippingAddress   ShippingAddress? @relation(fields: [shippingAddressId], references: [id])
   shippingAddressId String?
-
-  billingAddress   BillingAddress? @relation(fields: [billingAddressId], references: [id])
-  billingAddressId String?
+  billingAddress    BillingAddress?  @relation(fields: [billingAddressId], references: [id])
+  billingAddressId  String?
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updated   DateTime @updatedAt
 }
 
 model ShippingAddress {
