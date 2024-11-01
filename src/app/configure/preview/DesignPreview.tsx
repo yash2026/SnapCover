@@ -19,9 +19,10 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   const { toast } = useToast();
 
   const [showConfetti, setShowConfetti] = useState(false);
+
   useEffect(() => {
     setShowConfetti(true);
-  });
+  }, []);
 
   const { color, model, finish, material } = configuration;
   const tw = COLORS.find(
